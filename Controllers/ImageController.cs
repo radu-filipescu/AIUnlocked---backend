@@ -54,5 +54,33 @@ namespace AIUnlocked___backend.Controllers
         {
 
         }
+
+        [HttpGet]
+        [Route("getImagesOfClass")]
+        public List<string> GetImagesOfClass(string objectClass)
+        {
+            string dirPath = Path.Combine(Environment.CurrentDirectory, "Storage\\OwnDatabase\\" + objectClass + "\\train_data");
+            DirectoryInfo d = new DirectoryInfo(dirPath);
+
+            var Files = new FileInfo[0];
+            if (System.IO.Directory.Exists(dirPath))
+                 Files = d.GetFiles("*.jpg"); //Getting Text files
+
+            var filelist = new List<string>();
+
+            int limit = 50;
+            int counter = 0;
+
+            foreach (FileInfo file in Files)
+            {
+                if (counter == limit) break;
+                else counter++;
+
+                byte[] newImage = System.IO.File.ReadAllBytes(Path.Combine(dirPath, file.Name));
+                filelist.Add(Convert.ToBase64String(newImage));
+            }
+
+            return filelist;
+        }
     }
 }
