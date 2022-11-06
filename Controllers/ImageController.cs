@@ -56,6 +56,20 @@ namespace AIUnlocked___backend.Controllers
         }
 
         [HttpGet]
+        [Route("getNumberOfImagesOfClass")]
+        public int GetNumberOfImagesOfClass(string objectClass)
+        {
+            string dirPath = Path.Combine(Environment.CurrentDirectory, "Storage\\OwnDatabase\\" + objectClass + "\\train_data");
+            DirectoryInfo d = new DirectoryInfo(dirPath);
+
+            var Files = new FileInfo[0];
+            if (System.IO.Directory.Exists(dirPath))
+                Files = d.GetFiles("*.jpg"); //Getting jpg files
+
+            return Files.Length;
+        }
+
+        [HttpGet]
         [Route("getImagesOfClass")]
         public List<string> GetImagesOfClass(string objectClass)
         {
