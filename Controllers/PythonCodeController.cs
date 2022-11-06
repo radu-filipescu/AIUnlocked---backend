@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -72,6 +73,38 @@ namespace AIUnlocked___backend.Controllers
             {
                 outputFile.Write(codeDto.pythonCode);
             }
+
+            // TODO: move python exe closer (inside solution maybe?)
+
+            // actually running the code
+            run_cmd();
+        }
+
+        private void run_cmd()
+        {
+            string pyPath = "C:\\Users\\Triferment\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe";
+            string scriptPath = Path.Combine(Environment.CurrentDirectory, "PythonSandbox\\pythonCode.py");
+
+            ProcessStartInfo start = new ProcessStartInfo(pyPath);
+
+            start.Arguments = scriptPath;
+            start.UseShellExecute = false;
+            start.RedirectStandardOutput = true;
+
+            Process myProcess = new Process();
+            myProcess.StartInfo = start;
+
+            myProcess.Start();
+
+            StreamReader myStreamReader = myProcess.StandardOutput;
+            string myString = myStreamReader.ReadLine();
+
+            // wait exit signal from the app we called and then close it. 
+            myProcess.WaitForExit();
+            myProcess.Close();
+
+            // write the output we got from python app 
+            var resultString = "Value received from script: " + myString;
         }
     }
 }
