@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="PythonSandbox\ConfigFiles\" />
     <Folder Include="PythonSandbox\ImageDatabase\" />
     <Folder Include="Services\" />
     <Folder Include="Storage\UserUpload\" />
